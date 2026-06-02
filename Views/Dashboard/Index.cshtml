@@ -1,0 +1,42 @@
+@using Task9.Models
+@{
+    ViewData["Title"] = "Dashboard";
+    var notes = ViewBag.Notes as List<UserNote> ?? new List<UserNote>();
+}
+
+<h2>My Dashboard</h2>
+<p>Logged in as <strong>@User.Identity!.Name</strong></p>
+
+<hr />
+
+<h4>Add Note</h4>
+<form asp-action="AddNote" method="post" style="max-width:500px">
+    <div class="mb-2">
+        <input name="title" class="form-control" placeholder="Title" required />
+    </div>
+    <div class="mb-2">
+        <textarea name="content" class="form-control" rows="3" placeholder="Content" required></textarea>
+    </div>
+    <button type="submit" class="btn btn-success">Add</button>
+</form>
+
+<hr />
+
+<h4>My Notes</h4>
+@if (!notes.Any())
+{
+    <p>No notes yet.</p>
+}
+else
+{
+    <div class="list-group" style="max-width:600px">
+        @foreach (var note in notes)
+        {
+            <div class="list-group-item">
+                <strong>@note.Title</strong>
+                <small class="text-muted float-end">@note.CreatedAt.ToString("dd.MM.yyyy HH:mm")</small>
+                <p class="mb-0 mt-1">@note.Content</p>
+            </div>
+        }
+    </div>
+}
